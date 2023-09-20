@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: longpoll
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    haproxy.router.openshift.io/timeout: "3600s"
+    haproxy.router.openshift.io/timeout-tunnel: "3600s"
+
+spec:
+  rules:
+    - host: longpoll.127.0.0.1.nip.io
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: longpoll
+                port:
+                  number: 8000

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envoy
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    spec:
+      containers:
+        - name: envoy
+          image: envoyproxy/envoy:v1.27.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          command:
+            - envoy
+            - --config-path
+            - /configs/envoy/envoy.yaml
+            - --component-log-level
+            - upstream:info,http:debug,router:debug,jwt:debug
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 8080
+          volumeMounts:
+            - name: envoy-config
+              mountPath: /configs/envoy
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 100m
+              memory: 200Mi
+      restartPolicy: Always
+      volumes:
+        - name: envoy-config
+          configMap:
+            name: envoy-config

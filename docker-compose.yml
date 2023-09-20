@@ -1,0 +1,13 @@
+version: "3.4"
+services:
+  longpoll:
+    build:
+      context: .
+      x-bake:
+        # to allow run `docker buildx bake` to create a multi-arch container image supporting the following platforms:
+        platforms:
+          - linux/amd64
+#          - linux/arm64
+    image: docker.io/chirino/longpoll
+    ports:
+      - "8000:8000"

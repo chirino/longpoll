@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: longpoll
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    spec:
+      containers:
+        - name: longpoll
+          image: docker.io/chirino/longpoll:latest
+          imagePullPolicy: IfNotPresent
+#          command:
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 8000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
+            limits:
+              cpu: 100m
+              memory: 200Mi
+      restartPolicy: Always

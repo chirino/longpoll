@@ -1,0 +1,8 @@
+.idea
+deploy/
+.gitignore
+.dockerignore
+docker-compose.yaml
+Dockerfile
+hack/
+*.sh
